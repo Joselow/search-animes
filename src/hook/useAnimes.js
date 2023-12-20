@@ -2,21 +2,26 @@ import { useCallback, useMemo, useRef, useState } from "react"
 import { fetchAnime } from "../services/animes"
 import { mapAnimes } from "../helpers/mapAnimes"
 export function useAnimes ({ sort }) {
-  const [ error, setError ] = useState(null)
+  const [ errorMSG, setErrorMSG ] = useState(null)
   const [ animes, setAnimes ] = useState([])
+  const [ loading, setLoading ] = useState(false)
   const previousSearch = useRef(null)
 
   const getAnimes = useCallback(async({search}) => {
     if (previousSearch.current === search) return
 
     try {
+      setLoading(true)
+      setErrorMSG(null)
       previousSearch.current = search
       const { data } = await fetchAnime({ query: search , limit: 10})
       const mappedAnimes = mapAnimes(data)
       setAnimes(mappedAnimes)
     } catch (error) {
-      setError(error.message)
-    }    
+      setErrorMSG(error.message)
+    } finally {
+      setLoading(false)
+    }
   }, [])
 
 
@@ -27,5 +32,5 @@ export function useAnimes ({ sort }) {
   }, [sort, animes]); 
    
 
-  return { animes: sortedAnimes, getAnimes, error }
+  return { animes: sortedAnimes, getAnimes, errorMSG, loading }
 }

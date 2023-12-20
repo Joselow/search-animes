@@ -20,18 +20,18 @@ function AnimeList ({ animes }) {
   )
 }
 
-function NoResults () {
+function NoResults ({search}) {
   return (
-    <p style={{textAlign: 'center'}}>not found results for this search</p>
+    <p style={{textAlign: 'center'}}>not found results for <span style={{color: '#f7ed'}}>{search}</span></p>
   )
 }
 
-export function Animes ({ animes }) {
+export function Animes ({ animes, search }) {
   const hasAnimes = animes?.length > 0
   return (
       hasAnimes
         ? <AnimeList animes={animes}/>
-        : <NoResults/>
+        : <NoResults search={search}/>
   )
 
 }

@@ -1,9 +1,9 @@
 
 const API = 'https://api.jikan.moe/v4'
-export async function fetchAnime ({query, limit}) {
+export async function fetchAnime ({query, limit, page = 1}) {
   const MSG_ERROR = 'is not posible get information of this anime'
   try {
-    const response = await fetch(`${API}/anime?q=${query}&sfw&limit=${limit}`)
+    const response = await fetch(`${API}/anime?q=${query}&sfw&limit=${limit}&page=${page}`)
     if (!response.ok) {
       throw new Error(MSG_ERROR)
     }

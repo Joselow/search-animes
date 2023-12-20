@@ -3,14 +3,11 @@ import { Animes } from './components/Animes'
 import { useSearch } from './hook/useSearch'
 import { useAnimes } from './hook/useAnimes'
 import { useState } from 'react'
-import { useSearchDebounce } from './hook/useSearhDebouce'
 
 function App() {
   const [ sort, setSort ] = useState(false)
-  const { search, error, setSearch } = useSearch()
-  const { animes, getAnimes } = useAnimes({sort})
-
-  useSearchDebounce({search, getAnimes})
+  const { animes, getAnimes, loading } = useAnimes({sort})
+  const { search, error, setSearch } = useSearch({getAnimes})
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -21,7 +18,6 @@ function App() {
   const handleQuery = (e) => {
     const query = e.target.value
     setSearch(query)   
-    // if (query) getAnimes({ search: debounce })
   }
   const handleSort = () => {
     setSort(!sort)
@@ -30,7 +26,7 @@ function App() {
   return (
     <>
     <header>
-      <h1>Animes Seacrh</h1>
+      <h1>Animes Search</h1>
       <form action="" onSubmit={handleSubmit}
       >
         <input 
@@ -47,7 +43,12 @@ function App() {
     </header>
 
     <main>
-     <Animes animes={animes}></Animes>
+      { loading && (
+        <div style={{textAlign: 'center'}}>
+          <span >Loading ...</span>
+        </div>
+      )}
+      <Animes animes={animes} search={search}></Animes>
     </main>
     </>
   )
