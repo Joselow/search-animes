@@ -1,12 +1,13 @@
 import './App.css'
+import { useState } from 'react'
 import { Animes } from './components/Animes'
 import { useSearch } from './hook/useSearch'
 import { useAnimes } from './hook/useAnimes'
-import { useState } from 'react'
+import { Pagination } from './components/Pagination'
 
 function App() {
   const [ sort, setSort ] = useState(false)
-  const { animes, getAnimes, loading } = useAnimes({sort})
+  const { animes, getAnimes, loading, pagination } = useAnimes({sort})
   const { search, error, setSearch } = useSearch({getAnimes})
 
   const handleSubmit = (e) => {
@@ -23,10 +24,14 @@ function App() {
     setSort(!sort)
   }
 
+  const handleClick = (page) => {
+    getAnimes({search, page})
+  }
+
   return (
     <>
     <header>
-      <h1>Animes Search</h1>
+      <h1>Anime Search</h1>
       <form action="" onSubmit={handleSubmit}
       >
         <input 
@@ -37,6 +42,7 @@ function App() {
         { error && (
           <p style={{color: 'red'}}>{error}</p>
         ) }
+        <label>ordenar por score</label>
         <input type="checkbox" onChange={handleSort} checked={sort}/>
         <button >Search</button>
       </form>
@@ -50,6 +56,12 @@ function App() {
       )}
       <Animes animes={animes} search={search}></Animes>
     </main>
+    <section style={{textAlign: 'center', marginTop: '5px'}}>
+      <Pagination
+        handlePagination={handleClick}
+        pagination={pagination}
+      ></Pagination>
+    </section>
     </>
   )
 }
