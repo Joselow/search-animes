@@ -34,17 +34,19 @@ function App() {
       <h1>Anime Search</h1>
       <form action="" onSubmit={handleSubmit}
       >
-        <input 
-          onChange={handleQuery}
-          value={search}
-          name='query'
-          type="text" placeholder='Naruto, Death Note, Dragon Ball'/>
-        { error && (
-          <p style={{color: 'red'}}>{error}</p>
-        ) }
+        <div>
+          <input 
+            onChange={handleQuery}
+            value={search}
+            name='query'
+            type="text" placeholder='Naruto, Death Note, Dragon Ball'/>
+          { error && (
+            <p style={{color: 'red'}}>{error}</p>
+          ) }
+          <button>Search</button>
+        </div>
         <label>ordenar por score</label>
         <input type="checkbox" onChange={handleSort} checked={sort}/>
-        <button >Search</button>
       </form>
     </header>
 
